@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ardulove - Добро пожаловать!</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .hero-section {
+            position: relative;
+            background: url({% static 'site/index_header.jpg' %}) no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 60px 0;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный слой */
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-img-top {
+            height: 180px;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <!-- Hero Section -->
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4">Добро пожаловать на Ardulove!</h1>
+            <p class="lead">
+            Здесь вы найдёте множество идей и руководств для создания увлекательных и полезных проектов. Мы предлагаем детальные инструкции, советы по выбору компонентов и примеры кода, которые помогут вам реализовать ваши идеи, будь то домашняя автоматизация, робототехника или что-то совершенно уникальное.</p>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Latest Projects Section -->
+            <div class="col-md-8">
+                <h3 class="mb-4">Последние проекты</h3>
+                <div class="row">
+                    {% for project in projects %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ project.title }}</h5>
+                                    <p class="card-text">{{ project.description|truncatewords:10 }}</p>
+                                    <a href="{% url 'project_detail' project.id %}" class="btn btn-dark">Узнать больше</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Ozon Marketplace Section -->
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Наш магазин на Ozon</h5>
+                        <p class="card-text">Мы также присутствуем на Ozon! Ознакомьтесь с нашими товарами и приобретайте их на нашем магазине на маркетплейсе</p>
+                        <a href="https://www.ozon.ru/seller/ardulove-613009/elektronika-15500/?miniapp=seller_613009" target="_blank" class="btn btn-dark">Наша страница на Ozon</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="col-md-4">
+                <h3 class="mb-4">Навигация</h3>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="/projects" style="color: gray;">Наши проекты</a></li>
+                    <li class="list-group-item"><a href="/instructions" style="color: gray;">Полезные инструкции</a></li>
+                    <li class="list-group-item"><a href="/products" style="color: gray;">Магазин</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - Ardulove</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="{% static 'site/favicon.ico' %}">
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="container mt-5">
+    <h2>Контакты</h2>
+    <br>
+    <p>Мы готовы выслушать любые ваши вопросы, например если что-то не работет, либо работает не так, как хотите, либо вы не знаете, как хотите :)</p>
+    <ul class="list-unstyled">
+        <li><strong>Email:</strong> info@ardulove.com</li>
+        <li><strong>Телефон:</strong> <a href="tel:+79774660777">+7(977)466-07-77</a></li>
+    </ul>
+    <p>Но более охотно мы сможем вам помочь в следующих мессенджерах:</p>
+    <ul class="list-inline">
+        <li class="list-inline-item">
+            <a href="https://wa.me/79774660777" target="_blank" class="btn btn-success">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a href="https://t.me/+79774660777" target="_blank" class="btn btn-primary">
+                <i class="fab fa-telegram"></i> Telegram
+            </a>
+        </li>
+    </ul>
+
+    <p>Также у нас есть форма обратной связи (можете писать свои просьбы, предложения итд, мы обязательно их рассмотрим)</p>
+    <form method="get" action="{% url 'contact' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Сообщение:</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-dark">Отправить</button>
+    </form>
+</div>
+{% include 'footer.html' %}
+
+<!-- Подключение JS Bootstrap и зависимостей -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-pzjw8f+ua7Kw1TIqD4pXr+8abtTE1Pi6PViWg0PpKuH4XlEyUjHh7/zZO0gB4l+N" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgL+6YvExj6mW4/JaaKz0k5FWEpZZpccyD8y7GJK6tIT06eqdDt" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
