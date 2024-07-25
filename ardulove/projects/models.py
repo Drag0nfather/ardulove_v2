@@ -7,6 +7,8 @@ from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django_ckeditor_5.fields import CKEditor5Field
+import logging
+logger = logging.getLogger(__name__)
 
 
 def project_main_path(instance, filename):
@@ -39,23 +41,26 @@ def change_figure_tags(html_code):
 
 
 def move_images_and_update_paths(instance):
-    target_directory = os.path.join('media', 'projects', str(instance.id), 'article')
-    os.makedirs(target_directory, exist_ok=True)
+    try:
+        target_directory = os.path.join('media', 'projects', str(instance.id), 'article')
+        os.makedirs(target_directory, exist_ok=True)
 
-    image_sources = re.findall(r'<img[^>]+src="([^">]+)"', instance.article)
-    replacement_dict = {}
+        image_sources = re.findall(r'<img[^>]+src="([^">]+)"', instance.article)
+        replacement_dict = {}
 
-    for src in image_sources:
-        media_prefix, path = src[1:6], src[7:]
-        dest_path = os.path.join(media_prefix, 'projects', str(instance.id), 'article', path)
-        shutil.move(f'./{src}', dest_path)
-        replacement_dict[src] = dest_path
+        for src in image_sources:
+            media_prefix, path = src[1:6], src[7:]
+            dest_path = os.path.join(media_prefix, 'projects', str(instance.id), 'article', path)
+            shutil.move(f'./{src}', dest_path)
+            replacement_dict[src] = dest_path
 
-    for old_src, new_src in replacement_dict.items():
-        instance.article = instance.article.replace(old_src, f'/{new_src}')
+        for old_src, new_src in replacement_dict.items():
+            instance.article = instance.article.replace(old_src, f'/{new_src}')
 
-    instance.article = change_figure_tags(instance.article)
-    instance.save(update_fields=['article'])
+        instance.article = change_figure_tags(instance.article)
+        instance.save(update_fields=['article'])
+    except Exception as e:
+        logger.error(f"{e}")
 
 
 @receiver(post_save, sender=Project)
