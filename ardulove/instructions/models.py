@@ -38,8 +38,8 @@ def change_figure_tags(html_code):
 
 @receiver([post_save], sender=Instruction)
 def change_photo_folder(sender, instance, **kwargs):
-    if kwargs.get('created', None) is False:
-        return
+    # if kwargs.get('created', None) is False:
+    #     return
     instance_article = instance.article
     image_sources = re.findall(r'<img[^>]+src="([^">]+)"', instance_article)
     replacement_dict = {}
@@ -54,7 +54,9 @@ def change_photo_folder(sender, instance, **kwargs):
         instance_article = instance_article.replace(old_src, f'/{new_src}')
     instance_article = change_figure_tags(instance_article)
     instance.article = instance_article
+    post_save.disconnect(change_photo_folder, sender=Instruction)
     instance.save(update_fields=['article'])
+    post_save.connect(change_photo_folder, sender=Instruction)
 
 
 @receiver([post_delete], sender=Instruction)
