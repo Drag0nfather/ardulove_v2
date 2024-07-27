@@ -43,18 +43,11 @@ logging.basicConfig(filename='project_log.log', level=logging.INFO,
 def change_photo_folder(sender, instance, **kwargs):
     if kwargs.get('created', None) is False:
         return
-
-    logging.info(f'Starting photo folder change for project ID: {instance.id}')
-
     instance_article = instance.article
     image_sources = re.findall(r'<img[^>]+src="([^">]+)"', instance_article)
-    logging.info(f'Found image sources: {image_sources}')
-
     replacement_dict = {}
     target_directory = os.path.join('media', 'projects', str(instance.id), 'article')
     os.makedirs(target_directory, exist_ok=True)
-    logging.info(f'Created target directory: {target_directory}')
-
     for ims in image_sources:
         try:
             media_prefix, path = ims[1:6], ims[7:]
@@ -63,18 +56,13 @@ def change_photo_folder(sender, instance, **kwargs):
             replacement_dict[ims] = dest_path
             logging.info(f'Moved {ims} to {dest_path}')
         except Exception as e:
-            logging.error(f'Error moving {ims} to {dest_path}: {e}')
-
+            pass
     for old_src, new_src in replacement_dict.items():
         instance_article = instance_article.replace(old_src, f'/{new_src}')
-        logging.info(f'Replaced {old_src} with /{new_src} in article')
-
     instance_article = change_figure_tags(instance_article)
-    logging.info('Changed figure tags in article')
-
     instance.article = instance_article
     instance.save(update_fields=['article'])
-    logging.info(f'Article updated and saved for project ID: {instance.id}')
+
 
 @receiver([post_delete], sender=Project)
 def delete_photos_folder(sender, instance, **kwargs):
