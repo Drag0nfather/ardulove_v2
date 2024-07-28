@@ -46,11 +46,13 @@ def change_photo_folder(sender, instance, **kwargs):
     target_directory = os.path.join('media', 'instructions', str(instance.id), 'article')
     os.makedirs(target_directory, exist_ok=True)
     for ims in image_sources:
-        path = ims[ims.rfind('/') + 1:]
-        dest_path = os.path.join('media', 'instructions', str(instance.id), 'article', path)
-        shutil.move(f'./{ims}', dest_path)
-        replacement_dict[ims] = dest_path
-
+        try:
+            media_prefix, path = ims[1:6], ims[7:]
+            dest_path = os.path.join(media_prefix, 'instructions', str(instance.id), 'article', path)
+            shutil.move(f'./{ims}', dest_path)
+            replacement_dict[ims] = dest_path
+        except Exception as e:
+            pass
     for old_src, new_src in replacement_dict.items():
         instance_article = instance_article.replace(old_src, f'/{new_src}')
     instance_article = change_figure_tags(instance_article)
