@@ -29,7 +29,6 @@ class Instruction(models.Model):
         return f'{self.id}: {self.title}'
 
 
-
 def change_figure_tags(html_code):
     pattern = r'<figure.*?style="(.*?)".*?src="(.*?)".*?</figure>'
     replacement = r'<img style="\1" src="\2">'
@@ -43,16 +42,14 @@ def change_photo_folder(sender, instance, **kwargs):
     instance_article = instance.article
     image_sources = re.findall(r'<img[^>]+src="([^">]+)"', instance_article)
     replacement_dict = {}
-    target_directory = os.path.join('media', 'instructions', str(instance.id), 'article')
+    target_directory = os.path.join('ardulove', 'media', 'instructions', str(instance.id), 'article')
     os.makedirs(target_directory, exist_ok=True)
     for ims in image_sources:
-        try:
-            media_prefix, path = ims[1:6], ims[7:]
-            dest_path = os.path.join(media_prefix, 'instructions', str(instance.id), 'article', path)
-            shutil.move(f'./{ims}', dest_path)
-            replacement_dict[ims] = dest_path
-        except Exception as e:
-            pass
+        path = ims[ims.rfind('/') + 1:]
+        dest_path = os.path.join('ardulove', 'media', 'instructions', str(instance.id), 'article', path)
+        shutil.move(f'./{ims}', dest_path)
+        replacement_dict[ims] = dest_path
+
     for old_src, new_src in replacement_dict.items():
         instance_article = instance_article.replace(old_src, f'/{new_src}')
     instance_article = change_figure_tags(instance_article)
@@ -65,5 +62,5 @@ def change_photo_folder(sender, instance, **kwargs):
 @receiver([post_delete], sender=Instruction)
 def delete_photos_folder(sender, instance, **kwargs):
     folder = str(instance.image).rsplit('/', 1)[0]
-    if os.path.exists(f'media/{folder}'):
-        shutil.rmtree(f'media/{folder}')
+    if os.path.exists(f'ardulove/media/{folder}'):
+        shutil.rmtree(f'ardulove/media/{folder}')
