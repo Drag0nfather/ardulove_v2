@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = 'django-insecure-wmt!+7kcag!7hk4cu#i$c6bsy$20wfc!avl5!a2kr5q7s*m93z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -172,13 +172,21 @@ CKEDITOR_5_CONFIGS = {
                     'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'codeBlock', 'code', 'insertTable', 'todoList',
                     ],
         'image': {
-            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
-                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side', '|', 'resizeImage'],
+            'toolbar': [
+                'imageTextAlternative',
+                # '|',
+                # 'imageStyle:alignLeft',
+                # 'imageStyle:alignRight',
+                # 'imageStyle:alignCenter',
+                # '|',
+                'resizeImage',
+                'toggleImageCaption'
+            ],
             'styles': [
-                'side',
                 'alignLeft',
                 'alignRight',
                 'alignCenter',
+                'side'
             ],
 
         },
@@ -190,16 +198,9 @@ CKEDITOR_5_CONFIGS = {
                 {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
             ]
         },
-        # 'extraPlugins': ['ImageResize'],
 
     },
     'extends': {
-        # 'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-        #             'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
-        #             'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
-        #             'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
-        #              ],
-
         'heading': {
             'options': [
                 {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},

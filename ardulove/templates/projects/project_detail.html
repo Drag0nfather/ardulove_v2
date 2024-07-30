@@ -6,7 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ project.title }} - Project Detail</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'path/to/your/custom.css' %}">
     <link rel="shortcut icon" href="{% static 'site/favicon.ico' %}">
+    <style>
+        .ckeditor-content figure {
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .ckeditor-content figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .ckeditor-content .image_resized {
+            max-width: 100%;
+        }
+
+        .ckeditor-content .image_resized img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .ckeditor-content .image-style-align-center {
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .ckeditor-content .image-style-align-left {
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ckeditor-content .image-style-align-right {
+            float: right;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ckeditor-content::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .ckeditor-content p {
+            margin: 0;
+            padding: 0 0 1em 0;
+        }
+    </style>
 </head>
 <body>
     {% include 'nav.html' %}
@@ -14,8 +68,11 @@
         <h2>{{ project.title }}</h2>
         <img src="{{ project.image.url }}" class="img-fluid" alt="{{ project.title }}">
         <p class="mt-3">{{ project.description }}</p>
-        {{ project.article|safe }}
+        <div class="ckeditor-content">
+            {{ project.article|safe }}
+        </div>
     </div>
     {% include 'footer.html' %}
+
 </body>
 </html>

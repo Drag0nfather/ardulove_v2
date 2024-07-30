@@ -29,12 +29,6 @@ class Instruction(models.Model):
         return f'{self.id}: {self.title}'
 
 
-def change_figure_tags(html_code):
-    pattern = r'<figure.*?style="(.*?)".*?src="(.*?)".*?</figure>'
-    replacement = r'<img style="\1" src="\2">'
-    return re.sub(pattern, replacement, html_code)
-
-
 @receiver([post_save], sender=Instruction)
 def change_photo_folder(sender, instance, **kwargs):
     # if kwargs.get('created', None) is False:
@@ -52,7 +46,6 @@ def change_photo_folder(sender, instance, **kwargs):
 
     for old_src, new_src in replacement_dict.items():
         instance_article = instance_article.replace(old_src, f'/{new_src}')
-    instance_article = change_figure_tags(instance_article)
     instance.article = instance_article
     post_save.disconnect(change_photo_folder, sender=Instruction)
     instance.save(update_fields=['article'])
