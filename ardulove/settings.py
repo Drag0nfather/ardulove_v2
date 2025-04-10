@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-wmt!+7kcag!7hk4cu#i$c6bsy$20wfc!avl5!a2kr5q7s*m93z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ardulove.ru', '31.31.198.61']
+ALLOWED_HOSTS = ['ardulove.ru', '31.31.198.61', 'www.ardulove.ru',]
 
 
 # Application definition
